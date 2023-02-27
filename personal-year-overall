@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Personal Year, Month, and Day Calculator</title>
+  </head>
+  <body>
+    <h1>Personal Year, Month, and Day Calculator</h1>
+    <form>
+      <label for="dob">Enter your Date of Birth (DD-MM-YYYY):</label><br>
+      <input type="text" id="dob" name="dob"><br>
+      <button type="button" onclick="calculate()">Calculate</button>
+    </form>
+    <div id="output"></div>
+    <script>
+      function calculate() {
+        let dob = document.getElementById("dob").value;
+        let dobArr = dob.split("-");
+        let birthDay = parseInt(dobArr[0]);
+        let birthMonth = parseInt(dobArr[1]);
+        let birthYear = parseInt(dobArr[2]);
+        let currentYear = new Date().getFullYear();
+        let currentMonth = new Date().getMonth() + 1;
+        let currentDate = new Date().getDate();
+        let personalYear = birthDay + birthMonth + currentYear.toString().split("").reduce((acc, num) => acc + parseInt(num), 0);
+        while (personalYear > 9) {
+          personalYear = personalYear.toString().split("").reduce((acc, num) => acc + parseInt(num), 0);
+        }
+        let personalYearDuration = ((birthMonth < currentMonth) || (birthMonth === currentMonth && birthDay <= currentDate)) ? currentYear - birthYear + 1 : currentYear - birthYear;
+        let personalMonth = ((personalYear + currentMonth) > 12) ? (personalYear + currentMonth) % 12 : personalYear + currentMonth;
+        let personalDay = personalYear + currentYear + currentMonth + currentDate;
+        while (personalMonth > 12) {
+          personalMonth -= 12;
+        }
+        while (personalDay > 9) {
+          personalDay = personalDay.toString().split("").reduce((acc, num) => acc + parseInt(num), 0);
+        }
+        let output = document.getElementById("output");
+        output.innerHTML = "<p>Your Personal Year for " + currentYear + " is " + personalYear + " and it will last from " + dobArr[0] + "-" + dobArr[1] + "-" + currentYear + " to " + dobArr[0] + "-" + dobArr[1] + "-" + (birthYear + personalYearDuration) + ".</p><p>Your Personal Month for this month is " + personalMonth + ".</p><p>Your Personal Day for today is " + personalDay + ".</p><h2>Predictions:</h2>";
+        output.innerHTML += "<p><strong>Personal Year Prediction:</strong> ";
+        switch (personalYear) {
+          case 1:
+            output.innerHTML += "This year will be a time of new beginnings and fresh starts. You may feel a surge of energy and motivation to pursue your goals and dreams. It's a good time to take action and make things happen. Be open to new opportunities and trust in the Universe to guide you.</p>";
+            break;
+          case 2:
+            output.innerHTML += "This year will be a time of balance and harmony. You may find yourself focusing on your relationships with others and making sure they are healthy and supportive. It's a good time to work on yourself and your emotional wellbeing, and to let go of any negative emotions
